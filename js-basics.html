@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Day 8</title>
+</head>
+
+<body>
+    <h1 id="greeting">Hello</h1>
+    <p id="info"></p>
+
+    <button onclick="showInfo()">Click Me</button>
+    <button onclick="changeColor()">Change color</button>
+    <button onclick="resetPage()">Reset</button>
+    <button onclick="showDate()">Show Date</button>
+
+    <script>
+        const myname = "Keerthana Suresh"
+        const company = "Vilva Networks"
+        const targetSalary = "6 LPA"
+        const now = new Date()
+        let clickCount = 0
+
+        function showInfo() {
+            clickCount = clickCount + 1
+
+            document.getElementById("greeting").textContent =
+                "Hey, I'm " + myname + "!"
+
+            document.getElementById("info").textContent =
+                "I Work at" + company +
+                "My target" + targetSalary +
+                "you Clicked" + clickCount + " times . "
+        }
+
+
+        function changeColor() {
+            const colors = ["#ffffff", "#1d9e75", "#185fa5", "#ba7517", "#d4537e"]
+            const random = Math.floor(Math.random() * colors.length)
+            document.getElementById("greeting").style.color = colors[random]
+        }
+
+        function resetPage() {
+            clickCount = 0
+            document.getElementById("greeting").textContent = "Hello";
+            document.getElementById("info").textContent = "";
+            document.getElementById("greeting").style.color = "#333333"
+        }
+
+        function showDate() {
+            document.getElementById("info").innerHTML = now
+        }
+
+        console.log("Page Loaded");
+        console.log("Name:", myname)
+        console.log("Target", targetSalary)
+    </script>
+</body>
+
+</html>
