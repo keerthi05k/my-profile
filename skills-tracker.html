@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1d9e75;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 32px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .input {
+            flex: 1;
+            padding: 12px 6px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1d9e75;
+        }
+
+        select {
+            padding: 12px 16px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #1d9e75;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0f6e56;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1d9e75;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 4px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #f0f0f0;
+        }
+
+        .skill-name {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .skill-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 500;
+        }
+
+        .status-done {
+            background: #e1f5ee;
+            color: #0f6e56;
+        }
+
+        .status-learning {
+            background: #faeeda;
+            color: #854f0b;
+        }
+
+        .status-planned {
+            background: #f0f0f0;
+            color: #888888;
+        }
+
+        .delete-btn {
+            background: none;
+            color: #dd4444;
+            border: 1px solid #dd4444;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #dd4444;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 14px;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Skills Tracker</h1>
+        <p class="subtitle">Track everything you're learning on your 6 LPA journey</p>
+
+        <!--Input row -->
+        <div class="input-row">
+            <input type="text" id="skill-input" placeholder="Add a skill (e.g. React)">
+            <select id="status-select">
+                <option value="planned">Planned</option>
+                <option value="learning">Learning</option>
+                <option value="done">Done</option>
+            </select>
+            <button onclick="addSkill()">Add</button>
+        </div>
+
+        <!--Stats-->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-count">0</div>
+                <div class="stat-label">Total Skills</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="done-count">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="learning-count">0</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="learning-count">0</div>
+                <div class="stat-label">Planned</div>
+            </div>
+        </div>
+
+        <!--Skill list-->
+        <div class="skills-list" id="skills-list">
+            <div class="empty">No Skills added Yet. Add Your first skill above!</div>
+        </div>
+    </div>
+
+    <script>
+        let skills = [
+            { id: 1, name: "HTML", status: "done" },
+            { id: 2, name: "CSS", status: "done" },
+            { id: 3, name: "CSS Grid", status: "done" },
+            { id: 4, name: "Javascript", status: "Learning" },
+            { id: 5, name: "React", status: "planned" },
+            { id: 6, name: "Tailwind CSS", status: "planned"},
+        ]
+
+        function renderSkills() {
+            const list = document.getElementById("skills-list")
+
+            if (skills.length === 0) {
+                list.innerHTML = '<div class="empty">No Skills added yet!</div>'
+                updateStats()
+                return
+            }
+
+            list.innerHTML = skills.map(function (skill) {
+                return `
+                         <div class="skill-item>
+                         <span class="skill-name">${skill.name}</span>
+                         <span class="skill-status status-${skill.status}">
+                        ${skill.status === "done" ? "✅Done" :
+                        skill.status === "learning" ? "Learning" : "Planned"}
+                        </span>
+                        <button class="delete-btn" onclick="deleteSkill(${skill.id})">Remove</button>
+                        </div>`
+            }).join("")
+
+
+            updateStats()
+        }
+
+
+        function addSkill() {
+            const input = document.getElementById("skill-input")
+            const select = document.getElementById("status-select")
+
+            const skillName = input.value.trim()
+
+            if (skillName === "") {
+                alert("Please enter a skill name!")
+                return
+            }
+
+            const newSkill = {
+                id: Date.now(),
+                name: skillName,
+                status: select.value
+            }
+
+            skills.push(newSkill)
+
+            input.value = ""
+
+            renderSkills()
+        }
+
+        function deleteSkill(id) {
+            skills = skills.filter(function(skill) {
+                return skill.id !== id
+            })
+
+            renderSkills ()
+        }
+
+
+        function updateStatus() {
+            document.getElementById("total-count").textContent = skills.length
+
+            const doneSkills = skills.filter(function(s) {
+                return s.status === "done"
+            })
+
+            document.getElementById("done-count").textContent = doneSkills.length
+
+            const learningSkills = skills.filter(function(s) {
+                return s.status === "learning"
+            })
+
+            document.getElementById("learning-count").textContent = learningSkills.length
+            
+        }
+
+        document.getElementById("skill-input").addEventListener("keypress",function(e){
+            if (e.key === "Enter") {
+                addskill()
+            }
+        })
+
+        renderSkills()
+
+    </script>
+</body>
+
+</html>

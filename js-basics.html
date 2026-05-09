@@ -8,18 +8,19 @@
 </head>
 
 <body>
-    <h1 id="greeting">Hello</h1>
-    <p id="info"></p>
+    <!-- <h1 id="greeting">Hello</h1>
+    <p id="info"></p> -->
 
-    <button onclick="showInfo()">Click Me</button>
+    <!-- <button onclick="showInfo()">Click Me</button>
     <button onclick="changeColor()">Change color</button>
     <button onclick="resetPage()">Reset</button>
-    <button onclick="showDate()">Show Date</button>
+    <button onclick="showDate()">Show Date</button> -->
 
-    <script>
+    <!-- <script>
         const myname = "Keerthana Suresh"
         const company = "Vilva Networks"
         const targetSalary = "6 LPA"
+
         const now = new Date()
         let clickCount = 0
 
@@ -56,7 +57,72 @@
         console.log("Page Loaded");
         console.log("Name:", myname)
         console.log("Target", targetSalary)
+    </script> -->
+
+<!-- 
+    <script>
+        let skills = ["HTML", "CSS", "Javascript", "React"]
+
+        console.log(skills[0])
+        console.log(skills[2])
+
+        skills.push('Tailwind')
+        console.log(skills)
+
+        skills.pop()
+        console.log(skills)
+
+        console.log(skills.length)
+
+        skills.forEach(function(skill) {
+            console.log("I Know:", skill)
+        })
+
+        let longskills = skills.filter(function(skill) {
+            return skill.length > 3
+        })
+
+        console.log(longskills)
+
+        let upperskills = skills.map(function(skill){
+            return skill.toUpperCase()
+        })
+
+        console.log(upperskills)
+    </script> -->
+
+
+    <script>
+        let developer = {
+            name: "Keerthana",
+            age: 23,
+            company: "Vilva Networks",
+            salary: 600000,
+            skills: ["HTML", "CSS", "Javascript"],
+            isLearning: true
+        }
+
+        console.log(developer.name)
+        console.log(developer.age)
+        console.log(developer.company)
+        console.log(developer.salary)
+        console.log(developer.skills)
+        console.log(developer.isLearning)
+
+        developer.city = "chennai"
+        console.log(developer)
+
+        developer.salary = 13000
+        console.log(developer.salary)
+        
+        for (let key in developer) {
+            console.log(key, ":", developer[key])
+        }
     </script>
+
+
+
+    
 </body>
 
 </html>
