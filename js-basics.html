@@ -59,7 +59,7 @@
         console.log("Target", targetSalary)
     </script> -->
 
-<!-- 
+    <!-- 
     <script>
         let skills = ["HTML", "CSS", "Javascript", "React"]
 
@@ -92,7 +92,7 @@
     </script> -->
 
 
-    <script>
+    <!-- <script>
         let developer = {
             name: "Keerthana",
             age: 23,
@@ -118,11 +118,75 @@
         for (let key in developer) {
             console.log(key, ":", developer[key])
         }
+    </script> -->
+
+
+
+    <script>
+
+        // function
+        function greet(name) {
+            return "Hello " + name + "!"
+        }
+
+        console.log(greet("Keerthana"))
+
+        const greetArrow = (name) => {
+            return "Hello " + name + "!"
+        }
+
+        console.log(greetArrow("Keerthana"))
+
+
+        const greetShort = (name) => "Hello " + name + "!"
+        console.log(greetShort("Keerthana"))
+
+        const calculateSalary = (monthly, months) => {
+            return monthly * months
+        }
+
+        console.log(calculateSalary(12000, 12))
+        console.log(calculateSalary(50000, 12))
+
+        const applyJob = (company, role = "Frontend Developer") => {
+            return "Applying to " + company + " for " + role
+        }
+
+        console.log(applyJob("Zoho"))
+        console.log(applyJob("Freshworks", "UI Developer"))
+
+
+        // Loops
+        for (let i=1; i <= 5; i++) {
+            console.log("Day " + i + " of coding done!")
+        }
+
+        let day = 1
+        while (day <= 5) {
+            console.log("Week " + day)
+            day ++
+        }
+
+        const skills = ["HTML", "CSS", "JavaScript", "React"]
+
+        for (let i =0; i < skills.length; i++) {
+            console.log(i + 1 + ". " + skills[i])
+        }
+
+        skills.forEach((skills, index) => {
+            console.log(index + 1 + ". " + skill)
+        })
+
+        for (let i = 1; i <=10; i++) {
+            if (i === 5) break 
+            console.log(i)
+        }
+
+        for (let i = 1; i <= 10; i++) {
+            if (i === 5) continue
+            console.log(i)
+        }
     </script>
-
-
-
-    
 </body>
 
 </html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1d9e75;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 32px;
+        }
+
+        .input-box {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #555555;
+        }
+
+        input,
+        select {
+            padding: 10px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #1d9e75;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1d9e75;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        .add-btn:hover {
+            background-color: #0f6e56;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1d9e75;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888888;
+            margin-top: 4px;
+        }
+
+        .jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .job-info {
+            flex: 1;
+        }
+
+        .job-company {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 4px;
+        }
+
+        .job-role {
+            font-size: 13px;
+            color: #888888;
+        }
+
+        .job-salary {
+            font-size: 13px;
+            color: #1d9e75;
+            font-weight: bold;
+        }
+
+        .job-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-applied {
+            background: #e6f1fb;
+            color: #185fa5;
+        }
+
+        .status-interview {
+            background: #faeeda;
+            color: #854f0b;
+        }
+
+        .status-rejected {
+            background: #fbeaf0;
+            color: #993556;
+        }
+
+        .status-offer {
+            background: #e1f5ee;
+            color: #0f6e56;
+        }
+
+        .delete-btn {
+            background: none;
+            color: #dd4444;
+            border: 1px solid #dd4444;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+
+        .delete-btn:hover {
+            background: #dd4444;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 14px;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Job Application Tracker</h1>
+        <p class="subtitle">Track every comnpany you apply to - target 6 LPA by Nov 2026</p>
+    </div>
+
+    <div class="input-box">
+        <div class="input-row">
+            <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" id="company-input" placeholder="e.g. Zoho">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <input type="text" id="role-input" placeholder="e.g. Frontend Developer">
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="form-group">
+                <label>Expected Salary</label>
+                <input type="text" id="salary-input" placeholder="e.g. 4 LPA">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="status-select">
+                    <option value="applied">Applied</option>
+                    <option value="interview">Interview</option>
+                    <option value="offer">Offer</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+        <button class="add-btn" onclick="addJob()">Add Application</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="total-count">0</div>
+            <div class="stat-label">Total Applied</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="interview-count">0</div>
+            <div class="stat-label">Interviews</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="offer-count">0</div>
+            <div class="stat-label">Offers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="rejected-count">0</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+    </div>
+
+    <!-- Jobs list -->
+    <div class="jobs-list" id="jobs-list">
+        <div class="empty">No applications yet. Start applying and track here!</div>
+    </div>
+    </div>
+
+
+    <script>
+        // Your job applications data
+        let jobs = [
+            { id: 1, company: "Zoho", role: "Junior Frontend Developer", salary: "3.5 LPA", status: "applied" },
+            { id: 2, company: "Freshworks", role: "UI Developer", salary: "4 LPA", status: "applied" },
+        ]
+
+        // Render all jobs
+        function renderJobs() {
+            const list = document.getElementById("jobs-list")
+
+            if (jobs.length === 0) {
+                list.innerHTML = '<div class="empty">No applications yet. Start applying!</div>'
+                updateStats()
+                return
+            }
+
+            // Using map + arrow function to build HTML
+            list.innerHTML = jobs.map(job => `
+          <div class="job-card">
+            <div class="job-info">
+              <div class="job-company">${job.company}</div>
+              <div class="job-role">${job.role}</div>
+            </div>
+            <div class="job-salary">${job.salary}</div>
+            <span class="job-status status-${job.status}">
+              ${job.status === "applied" ? "📨 Applied" :
+                    job.status === "interview" ? "🔥 Interview" :
+                        job.status === "offer" ? "✅ Offer" : "❌ Rejected"}
+            </span>
+            <button class="delete-btn" onclick="deleteJob(${job.id})">Remove</button>
+          </div>
+        `).join("")
+
+            updateStats()
+        }
+
+        // Add new job using a function
+        function addJob() {
+            const company = document.getElementById("company-input").value.trim()
+            const role = document.getElementById("role-input").value.trim()
+            const salary = document.getElementById("salary-input").value.trim()
+            const status = document.getElementById("status-select").value
+
+            // Validation using if statement
+            if (company === "" || role === "") {
+                alert("Please enter company name and role!")
+                return
+            }
+
+            const newJob = {
+                id: Date.now(),
+                company: company,
+                role: role,
+                salary: salary || "Not specified",
+                status: status
+            }
+
+            jobs.push(newJob)
+
+            // Clear inputs using a loop
+            const inputs = ["company-input", "role-input", "salary-input"]
+            inputs.forEach(id => {
+                document.getElementById(id).value = ""
+            })
+
+            renderJobs()
+        }
+
+        // Delete job using filter
+        function deleteJob(id) {
+            jobs = jobs.filter(job => job.id !== id)
+            renderJobs()
+        }
+
+        // Update stats using filter + loop
+        function updateStats() {
+            document.getElementById("total-count").textContent = jobs.length
+
+            // Count each status using filter
+            const statuses = ["interview", "offer", "rejected"]
+            const ids = ["interview-count", "offer-count", "rejected-count"]
+
+            for (let i = 0; i < statuses.length; i++) {
+                const count = jobs.filter(job => job.status === statuses[i]).length
+                document.getElementById(ids[i]).textContent = count
+            }
+        }
+
+        // Enter key to add
+        document.getElementById("company-input").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") addJob()
+        })
+
+        renderJobs()
+    </script>
+</body>
+
+</html>
