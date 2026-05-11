@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1d9e75;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 32px;
+        }
+
+        .input-box {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .input-box textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 12px;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1d9e75;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-add {
+            flex: 1;
+            padding: 10px;
+            background: #1d9e75;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-add:hover {
+            background: #0f6e56;
+        }
+
+        .btn-clear {
+            padding: 10px 20px;
+            background: white;
+            color: #dd4444;
+            border: 1px solid #dd4444;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-clear:hover {
+            background: #dd4444;
+            color: white;
+        }
+
+        .fliter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .fliter-btn {
+            padding: 6px 16px;
+            border-radius: 99px;
+            border: 1px solid #dddddd;
+            background: white;
+            font-size: 13px;
+            color: #555555;
+            cursor: pointer;
+        }
+
+        .fliter-btn.active {
+            background: #1d9e75;
+            border-color: #1d9e75;
+            color: white;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .note-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .note-card.important {
+            border-left: 4px solid #1d9e75;
+        }
+
+        .note-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+
+        .note-body {
+            font-size: 13px;
+            color: #888888;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-date {
+            font-size: 11px;
+            color: #aaaaaa;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-important {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 99px;
+            border: 1px solid #1d9e75;
+            color: #1d9e75;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn-important.marked {
+            background: #1d9e75;
+            color: white;
+        }
+
+        .btn-delete {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 99px;
+            border: 1px solid #dd4444;
+            color: #dd4444;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background: #dd4444;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 14px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            grid-column: 1 / -1;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #aaaaaa;
+            text-align: right;
+            margin-top: -8px;
+            margin-bottom: 12px;
+        }
+
+        .char-count.warning {
+            color: #ba7517;
+        }
+
+        .char-count.danger {
+            color: #dd4444;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Study Notes</h1>
+        <p class="subtitle">Save what you learn every day — your personal knowledge base</p>
+
+        <!-- Input -->
+        <div class="input-box">
+            <input type="text" id="note-title" placeholder="Note title (e.g. What is Flexbox?)">
+            <textarea id="note-body" placeholder="Write what you learned today..."></textarea>
+            <div class="char-count" id="char-count">0 / 300</div>
+            <div class="btn-row">
+                <button class="btn-add" id="add-btn">Add Note</button>
+                <button class="btn-clear" id="clear-btn">Clear All</button>
+            </div>
+        </div>
+
+        <!-- Filter buttons -->
+        <div class="filter-row">
+            <button class="filter-btn active" data-filter="all">All Notes</button>
+            <button class="filter-btn" data-filter="important">⭐ Important</button>
+        </div>
+
+        <!-- Notes grid -->
+        <div class="notes-grid" id="notes-grid"></div>
+    </div>
+
+    <script>
+        // Data
+        let notes = [
+            {
+                id: 1,
+                title: "What is Flexbox?",
+                body: "Flexbox is a CSS layout tool. Use display:flex on parent. justify-content aligns horizontally. align-items aligns vertically.",
+                date: "Day 4",
+                important: true
+            },
+            {
+                id: 2,
+                title: "JS Arrays",
+                body: "Arrays store multiple values. Use push() to add, pop() to remove, filter() to search, map() to transform.",
+                date: "Day 9",
+                important: false
+            },
+            {
+                id: 3,
+                title: "CSS Grid",
+                body: "Grid is for 2D layouts. Use grid-template-areas to name zones. fr unit takes available space.",
+                date: "Day 5",
+                important: true
+            }
+        ]
+
+        let currentFilter = "all"
+
+        // Get DOM elements using querySelector
+        const titleInput = document.querySelector("#note-title")
+        const bodyInput = document.querySelector("#note-body")
+        const notesGrid = document.querySelector("#notes-grid")
+        const charCount = document.querySelector("#char-count")
+        const addBtn = document.querySelector("#add-btn")
+        const clearBtn = document.querySelector("#clear-btn")
+
+        // Render notes
+        function renderNotes() {
+            // Filter based on current filter
+            let filteredNotes = notes
+
+            if (currentFilter === "important") {
+                filteredNotes = notes.filter(note => note.important)
+            }
+
+            if (filteredNotes.length === 0) {
+                notesGrid.innerHTML = '<div class="empty">No notes here yet. Add your first note!</div>'
+                return
+            }
+
+            // Build each note card using createElement
+            notesGrid.innerHTML = ""
+
+            filteredNotes.forEach(note => {
+                // Create card element
+                const card = document.createElement("div")
+                card.className = "note-card"
+
+                // Add important class if marked
+                if (note.important) {
+                    card.classList.add("important")
+                }
+
+                // Set inner HTML
+                card.innerHTML = `
+            <div class="note-title">${note.title}</div>
+            <div class="note-body">${note.body}</div>
+            <div class="note-footer">
+              <span class="note-date">${note.date}</span>
+              <div class="note-actions">
+                <button class="btn-important ${note.important ? 'marked' : ''}"
+                  onclick="toggleImportant(${note.id})">
+                  ${note.important ? "⭐ Marked" : "☆ Mark"}
+                </button>
+                <button class="btn-delete" onclick="deleteNote(${note.id})">Delete</button>
+              </div>
+            </div>
+          `
+
+                // Append to grid using appendChild
+                notesGrid.appendChild(card)
+            })
+        }
+
+        // Add note
+        function addNote() {
+            const title = titleInput.value.trim()
+            const body = bodyInput.value.trim()
+
+            if (title === "" || body === "") {
+                alert("Please fill in both title and note!")
+                return
+            }
+
+            const newNote = {
+                id: Date.now(),
+                title: title,
+                body: body,
+                date: new Date().toLocaleDateString("en-IN"),
+                important: false
+            }
+
+            notes.push(newNote)
+            titleInput.value = ""
+            bodyInput.value = ""
+            charCount.textContent = "0 / 300"
+            charCount.className = "char-count"
+
+            renderNotes()
+        }
+
+        // Delete note
+        function deleteNote(id) {
+            notes = notes.filter(note => note.id !== id)
+            renderNotes()
+        }
+
+        // Toggle important
+        function toggleImportant(id) {
+            notes = notes.map(note => {
+                if (note.id === id) {
+                    return { ...note, important: !note.important }
+                }
+                return note
+            })
+            renderNotes()
+        }
+
+        // Character counter using addEventListener
+        bodyInput.addEventListener("input", function () {
+            const count = bodyInput.value.length
+            charCount.textContent = count + " / 300"
+
+            // classList manipulation
+            charCount.className = "char-count"
+            if (count > 200) charCount.classList.add("warning")
+            if (count > 270) charCount.classList.add("danger")
+        })
+
+        // Add button click
+        addBtn.addEventListener("click", addNote)
+
+        // Clear all
+        clearBtn.addEventListener("click", function () {
+            if (notes.length === 0) return
+            const confirm = window.confirm("Delete all notes?")
+            if (confirm) {
+                notes = []
+                renderNotes()
+            }
+        })
+
+        // Enter key on title
+        titleInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                bodyInput.focus()
+            }
+        })
+
+        // Filter buttons using querySelectorAll
+        const filterBtns = document.querySelectorAll(".filter-btn")
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", function () {
+                // Remove active from all
+                filterBtns.forEach(b => b.classList.remove("active"))
+                // Add active to clicked
+                btn.classList.add("active")
+                // Update filter
+                currentFilter = btn.dataset.filter
+                renderNotes()
+            })
+        })
+
+        // Start
+        renderNotes()
+    </script>
+
+</body>
+
+</html>
